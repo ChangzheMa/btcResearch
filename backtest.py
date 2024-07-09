@@ -5,11 +5,16 @@ from strategy.price_momentum import ma5_ma10
 from util import print_portfolio_metrics
 
 
-def do_backtest(klines):
+def do_backtest(klines, period="1s"):
     # 回测参数
     CASH = 1e6
     POS = 0
     DELAY = 3
+    ROWS_PER_DAY = 3600 * 24 if period == "1s" \
+        else 60 * 24 if period == "1m" \
+        else 12 * 24 if period == "5m" \
+        else 24 if period == "1h" \
+        else 1
 
     portfolios = [CASH]
     day_portfolios = [CASH]
@@ -21,8 +26,8 @@ def do_backtest(klines):
             raise "爆仓了"
 
         portfolios.append(total_value)
-        if index % (3600 * 24) == 0:
-            print(f"day {int(index / 3600 / 24):2d}, value {total_value:.5f}")
+        if index % ROWS_PER_DAY == 0:
+            print(f"day {int(index / ROWS_PER_DAY):2d}, value {total_value:.5f}")
             day_portfolios.append(total_value)
 
         ops = klines.iloc[index - DELAY]['ops']
@@ -34,3 +39,5 @@ def do_backtest(klines):
     plt.plot(portfolios)
     plt.show()
     print_portfolio_metrics(day_portfolios)
+
+    return portfolios, day_portfolios

@@ -7,11 +7,11 @@ import os
 os.chdir('E:\\src\\btcResearch')
 
 
-def load_klines():
+def load_klines(period="1s"):
     dfs = []
     folder = 'binance/trade'
     for file in os.listdir(folder):
-        if file.startswith('BTCFDUSD-1s-'):
+        if file.startswith(f"BTCFDUSD-{period}-"):
             dfs.append(pd.read_csv(os.path.join(folder, file),
                                    names=['open_time', 'open', 'high', 'low', 'close', 'volume', 'close_time',
                                           'quote_volume', 'count', 'taker_buy_volume', 'taker_buy_quote_volume',
