@@ -22,4 +22,4 @@ def calculate_portfolio_metrics(portfolio, risk_free_rate=0.01, trading_days=365
 
 def print_portfolio_metrics(portfolio):
     annualized_return, max_drawdown, annualized_sharpe_ratio = calculate_portfolio_metrics(portfolio)
-    print(f"年化回报: {annualized_return*100:.3f}%, 最大回撤: {max_drawdown*100:.3f}%, 夏普率: {annualized_sharpe_ratio:.5f}")
+    print(f"年化回报: {annualized_return:.5f} 倍, 最大回撤: {max_drawdown*100:.3f}%, 夏普率: {annualized_sharpe_ratio:.5f}")

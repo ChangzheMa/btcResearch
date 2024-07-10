@@ -76,3 +76,29 @@ def vwap5_vwap10_vwap20(klines, revert=False):
         klines['ops'] = -klines['ops']
     return klines
 
+
+def ma5_ma10_ma20_choice(klines, revert=False):
+    print("收盘价、5日均线、10日均线、20日均线 动量策略，添加分钟线择时")
+    klines['MA5'] = klines['close'].rolling(window=5).mean()
+    klines['MA10'] = klines['close'].rolling(window=10).mean()
+    klines['MA20'] = klines['close'].rolling(window=20).mean()
+    klines['MA5'] = klines['MA5'].fillna(method='bfill')
+    klines['MA10'] = klines['MA10'].fillna(method='bfill')
+    klines['MA20'] = klines['MA20'].fillna(method='bfill')
+
+    klines['MA300'] = klines['close'].rolling(window=300).mean()
+    klines['MA600'] = klines['close'].rolling(window=600).mean()
+    klines['MA300'] = klines['MA300'].fillna(method='bfill')
+    klines['MA600'] = klines['MA600'].fillna(method='bfill')
+
+    cond_down = (klines['close'] < klines['MA5']) & (klines['MA5'] < klines['MA10']) & (klines['MA10'] < klines['MA20'])
+    cond_up = (klines['close'] > klines['MA5']) & (klines['MA5'] > klines['MA10']) & (klines['MA10'] > klines['MA20'])
+    cond_down_reverse = ((klines['close'] < klines['MA300']) & (klines['MA300'] < klines['MA600']))
+    cond_up_reverse = (klines['close'] > klines['MA300']) & (klines['MA300'] > klines['MA600'])
+
+    klines['ops'] = 0
+    klines.loc[cond_down & (~cond_down_reverse), 'ops'] = -1
+    klines.loc[cond_up & (~cond_up_reverse), 'ops'] = 1
+    if revert:
+        klines['ops'] = -klines['ops']
+    return klines
