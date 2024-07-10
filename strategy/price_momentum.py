@@ -1,4 +1,4 @@
-def ma5_ma10(klines):
+def ma5_ma10(klines, revert=False):
     print("收盘价、5日均线、10日均线 动量策略")
     klines['MA5'] = klines['close'].rolling(window=5).mean()
     klines['MA10'] = klines['close'].rolling(window=10).mean()
@@ -9,10 +9,12 @@ def ma5_ma10(klines):
     klines['ops'] = 0
     klines.loc[cond_down, 'ops'] = -1
     klines.loc[cond_up, 'ops'] = 1
+    if revert:
+        klines['ops'] = -klines['ops']
     return klines
 
 
-def ma5_ma10_ma20(klines):
+def ma5_ma10_ma20(klines, revert=False):
     print("收盘价、5日均线、10日均线、20日均线 动量策略")
     klines['MA5'] = klines['close'].rolling(window=5).mean()
     klines['MA10'] = klines['close'].rolling(window=10).mean()
@@ -26,10 +28,12 @@ def ma5_ma10_ma20(klines):
     klines['ops'] = 0
     klines.loc[cond_down, 'ops'] = -1
     klines.loc[cond_up, 'ops'] = 1
+    if revert:
+        klines['ops'] = -klines['ops']
     return klines
 
 
-def ma5_ma10_ma20_revert(klines):
+def ma5_ma10_ma20_revert(klines, revert=False):
     """
     这个不好，会亏本
     """
@@ -46,10 +50,12 @@ def ma5_ma10_ma20_revert(klines):
     klines['ops'] = 0
     klines.loc[cond_down, 'ops'] = -1
     klines.loc[cond_up, 'ops'] = 1
+    if revert:
+        klines['ops'] = -klines['ops']
     return klines
 
 
-def vwap5_vwap10_vwap20(klines):
+def vwap5_vwap10_vwap20(klines, revert=False):
     print("收盘价、5日vwap、10日vwap、20日vwap 动量策略")
     klines['typical_price'] = (klines['high'] + klines['low'] + klines['close']) / 3
     klines['price_volume'] = klines['typical_price'] * klines['volume']
@@ -66,5 +72,7 @@ def vwap5_vwap10_vwap20(klines):
     klines['ops'] = 0
     klines.loc[cond_down, 'ops'] = -1
     klines.loc[cond_up, 'ops'] = 1
+    if revert:
+        klines['ops'] = -klines['ops']
     return klines
 

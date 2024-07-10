@@ -5,11 +5,12 @@ from strategy.price_momentum import ma5_ma10
 from util import print_portfolio_metrics
 
 
-def do_backtest(klines, period="1s"):
+def do_backtest(klines, period="1s", delay=3):
+    print(f"回测参数, period: {period}, delay: {delay}")
     # 回测参数
-    CASH = 1e6
+    CASH = 1
     POS = 0
-    DELAY = 3
+    DELAY = delay
     ROWS_PER_DAY = 3600 * 24 if period == "1s" \
         else 60 * 24 if period == "1m" \
         else 12 * 24 if period == "5m" \

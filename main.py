@@ -5,7 +5,7 @@ from backtest import do_backtest
 
 
 if __name__ == '__main__':
-    period = "1m"
+    period = "1s"
     df = data.load_klines(period)
-    df = ma5_ma10(df)
-    portfolios, day_portfolios = do_backtest(df, period)
+    df = vwap5_vwap10_vwap20(df, revert=False)
+    portfolios, day_portfolios = do_backtest(df, period, delay=3)
