@@ -8,5 +8,5 @@ import matplotlib.pyplot as plt
 if __name__ == '__main__':
     period = "1s"
     df = data.load_klines(period)
-    df = ma5_ma10_ma20_choice(df, revert=False)
-    portfolios, day_portfolios = do_backtest(df, period, delay=3)
+    df, label = ma5_ma10_ma20_choice(df, revert=False)
+    portfolios, day_portfolios = do_backtest(df, period, delay=1, label=label)

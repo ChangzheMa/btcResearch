@@ -4,8 +4,11 @@ import matplotlib.pyplot as plt
 from strategy.price_momentum import ma5_ma10
 from util import print_portfolio_metrics
 
+plt.rcParams['font.sans-serif'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
 
-def do_backtest(klines, period="1s", delay=3):
+
+def do_backtest(klines, period="1s", delay=3, label=""):
     print(f"回测参数, period: {period}, delay: {delay}")
     # 回测参数
     CASH = 1
@@ -37,8 +40,10 @@ def do_backtest(klines, period="1s", delay=3):
 
     day_portfolios.append(total_value)
 
+    annualized_return, max_drawdown, annualized_sharpe_ratio = print_portfolio_metrics(day_portfolios)
     plt.plot(portfolios)
-    plt.show()
-    print_portfolio_metrics(day_portfolios)
+    plt.yscale('log')
+    plt.title(f"{label} \n period: {period}, delay: {delay}, sharp: {annualized_sharpe_ratio:.3f}")
+    plt.savefig(f"test_result\\period{period}_delay{delay}.png")
 
     return portfolios, day_portfolios
