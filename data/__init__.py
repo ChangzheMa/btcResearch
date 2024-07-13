@@ -7,7 +7,7 @@ import os
 os.chdir('E:\\src\\btcResearch')
 
 
-def load_klines(period="1s"):
+def load_klines(period="1s", resample=None):
     dfs = []
     folder = 'binance/trade'
     for file in os.listdir(folder):
@@ -16,7 +16,26 @@ def load_klines(period="1s"):
                                    names=['open_time', 'open', 'high', 'low', 'close', 'volume', 'close_time',
                                           'quote_volume', 'count', 'taker_buy_volume', 'taker_buy_quote_volume',
                                           'ignore']))
-    return pd.concat(dfs)
+    df = pd.concat(dfs)
+    if resample is not None:
+        df['open_time'] = pd.to_datetime(df['open_time'], unit='ms')
+        df.set_index('open_time', inplace=True)
+        df = df.resample(resample).apply({
+            'open': 'first',
+            'high': 'max',
+            'low': 'min',
+            'close': 'last',
+            'volume': 'sum',
+            'close_time': 'last',
+            'quote_volume': 'sum',
+            'count': 'sum',
+            'taker_buy_volume': 'sum',
+            'taker_buy_quote_volume': 'sum',
+            'ignore': 'first'
+        })
+        df.dropna(how='any', inplace=True)
+        df.reset_index(inplace=True)
+    return df
 
 
 def load_aggTrades():

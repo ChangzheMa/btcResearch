@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
     period = "1s"
-    df = data.load_klines(period)
-    df, label = ma5_ma10_ma20_choice_and_decay(df, revert=False)
-    portfolios, day_portfolios = do_backtest(df, period, delay=3, label=label)
+    resample = "3s"
+    df = data.load_klines(period, resample)
+    df, label = ma5_ma10_ma20_choice(df, revert=False)
+    portfolios, day_portfolios = do_backtest(df, period, resample, delay=1, label=label)

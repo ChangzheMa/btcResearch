@@ -8,13 +8,15 @@ plt.rcParams['font.sans-serif'] = ['SimHei']
 plt.rcParams['axes.unicode_minus'] = False
 
 
-def do_backtest(klines, period="1s", delay=3, label=""):
-    print(f"回测参数, period: {period}, delay: {delay}")
+def do_backtest(klines, period="1s", resample=None, delay=3, label=""):
+    print(f"回测参数, period: {period}, resample: {resample}, delay: {delay}")
     # 回测参数
     CASH = 1
     POS = 0
     DELAY = delay
-    ROWS_PER_DAY = 3600 * 24 if period == "1s" \
+    ROWS_PER_DAY = 3600 * 24 if period == "1s" and resample is None \
+        else 3600 * 24 / 3 if period == "1s" and resample == "3s" \
+        else 3600 * 24 / 5 if period == "1s" and resample == "5s" \
         else 60 * 24 if period == "1m" \
         else 12 * 24 if period == "5m" \
         else 24 if period == "1h" \
@@ -43,7 +45,7 @@ def do_backtest(klines, period="1s", delay=3, label=""):
     annualized_return, max_drawdown, annualized_sharpe_ratio = print_portfolio_metrics(day_portfolios)
     plt.plot(portfolios)
     plt.yscale('log')
-    plt.title(f"{label} \n period: {period}, delay: {delay}, sharp: {annualized_sharpe_ratio:.3f}")
-    plt.savefig(f"test_result\\period{period}_delay{delay}.png")
+    plt.title(f"{label} \n period: {period}, resample: {resample}, delay: {delay}, sharp: {annualized_sharpe_ratio:.3f}")
+    plt.savefig(f"test_result\\period{period}_resample{resample}_delay{delay}.png")
 
     return portfolios, day_portfolios
