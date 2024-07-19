@@ -10,6 +10,7 @@ def ma5_ma10(klines, revert=False):
     klines['ops'] = 0
     klines.loc[cond_down, 'ops'] = -1
     klines.loc[cond_up, 'ops'] = 1
+    klines['order_price'] = klines['close']
     if revert:
         klines['ops'] = -klines['ops']
     return klines, label
@@ -30,6 +31,7 @@ def ma5_ma10_ma20(klines, revert=False):
     klines['ops'] = 0
     klines.loc[cond_down, 'ops'] = -1
     klines.loc[cond_up, 'ops'] = 1
+    klines['order_price'] = klines['close']
     if revert:
         klines['ops'] = -klines['ops']
     return klines, label
@@ -53,6 +55,7 @@ def ma5_ma10_ma20_revert(klines, revert=False):
     klines['ops'] = 0
     klines.loc[cond_down, 'ops'] = -1
     klines.loc[cond_up, 'ops'] = 1
+    klines['order_price'] = klines['close']
     if revert:
         klines['ops'] = -klines['ops']
     return klines, label
@@ -76,6 +79,7 @@ def vwap5_vwap10_vwap20(klines, revert=False):
     klines['ops'] = 0
     klines.loc[cond_down, 'ops'] = -1
     klines.loc[cond_up, 'ops'] = 1
+    klines['order_price'] = klines['close']
     if revert:
         klines['ops'] = -klines['ops']
     return klines, label
@@ -104,6 +108,7 @@ def ma5_ma10_ma20_choice(klines, revert=False):
     klines['ops'] = 0
     klines.loc[cond_down & (~cond_down_reverse), 'ops'] = -1
     klines.loc[cond_up & (~cond_up_reverse), 'ops'] = 1
+    klines['order_price'] = klines['close']
     if revert:
         klines['ops'] = -klines['ops']
     return klines, label
@@ -135,6 +140,7 @@ def ma5_ma10_ma20_choice_and_decay(klines, revert=False):
     klines.loc[cond_up & (~cond_up_reverse), '_ops'] = 1
     klines['ops'] = klines['_ops'] * decay + klines['_ops'].shift(1) * (1-decay)
     klines['ops'] = klines['ops'].fillna(method='bfill')
+    klines['order_price'] = klines['close']
     if revert:
         klines['ops'] = -klines['ops']
     return klines, label

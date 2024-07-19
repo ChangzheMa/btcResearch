@@ -34,7 +34,7 @@ def load_klines(period="1s", resample=None):
             'ignore': 'first'
         })
         df.dropna(how='any', inplace=True)
-        df.reset_index(inplace=True)
+    df.reset_index(inplace=True)
     return df
 
 
