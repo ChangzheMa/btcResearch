@@ -12,7 +12,7 @@ df["buy"] = (df['size'] > 0).astype(int)
 df["sell"] = (df['size'] < 0).astype(int)
 df["timestamp_sec"] = df["timestamp"].astype(int)
 
-pre_tick_count_list = [20, 40, 80, 160, 320, 640, 1280, 2560]   # 5秒 ~ 10分钟
+pre_sec_count_list = [5, 10, 20, 40, 80, 160, 320, 640]   # 5秒 ~ 10分钟
 factor_list = []
 for pre_tick_count in pre_tick_count_list:
     df[f"buy_count_{pre_tick_count}t"] = df["buy"].rolling(window=pre_tick_count).sum()
