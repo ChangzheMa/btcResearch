@@ -36,10 +36,10 @@ for pre_sec_count in pre_sec_count_list:
     df_filled[f"sell_count_{pre_sec_count}s"] = df_filled["sell_count"].rolling(window=pre_sec_count).sum()
     df_filled[f"count_ib_{pre_sec_count}s"] = (df_filled[f"buy_count_{pre_sec_count}s"] - df_filled[f"sell_count_{pre_sec_count}s"]) / (df_filled[f"buy_count_{pre_sec_count}s"] + df_filled[f"sell_count_{pre_sec_count}s"])
     factor_list.append(f"count_ib_{pre_sec_count}s")
-    df_filled[f"buy_size_{pre_sec_count}s"] = df_filled["buy_size_sum"].rolling(window=pre_sec_count).sum()
-    df_filled[f"sell_size_{pre_sec_count}s"] = df_filled["sell_size_sum"].rolling(window=pre_sec_count).sum()
-    df_filled[f"size_ib_{pre_sec_count}s"] = (df_filled[f"buy_size_{pre_sec_count}s"] + df_filled[f"sell_size_{pre_sec_count}s"]) / (df_filled[f"buy_size_{pre_sec_count}s"] - df_filled[f"sell_size_{pre_sec_count}s"])
-    factor_list.append(f"size_ib_{pre_sec_count}s")
+    # df_filled[f"buy_size_{pre_sec_count}s"] = df_filled["buy_size_sum"].rolling(window=pre_sec_count).sum()
+    # df_filled[f"sell_size_{pre_sec_count}s"] = df_filled["sell_size_sum"].rolling(window=pre_sec_count).sum()
+    # df_filled[f"size_ib_{pre_sec_count}s"] = (df_filled[f"buy_size_{pre_sec_count}s"] + df_filled[f"sell_size_{pre_sec_count}s"]) / (df_filled[f"buy_size_{pre_sec_count}s"] - df_filled[f"sell_size_{pre_sec_count}s"])
+    # factor_list.append(f"size_ib_{pre_sec_count}s")
 
 future_return_sec_count_list = [5, 10, 20]    # 5秒， 10秒， 20秒
 return_list = []
@@ -51,8 +51,12 @@ df_filled = df_filled.fillna(0)
 df_filled = df_filled.replace([np.inf, -np.inf], 0)
 
 
-# 每秒抽样，然后计算 corr
-df_sampled = df_filled
+# # 每秒抽样，然后计算 corr
+# df_sampled = df_filled
+
+# 每秒抽样并且过滤过去5秒交易很少的行，然后计算 corr
+df_sampled = df_filled[df_filled['buy_count_5s'] + df_filled['sell_count_5s'] >= 3]
+
 corr_list_sampled = []
 for factor_name in factor_list:
     for return_name in return_list:
