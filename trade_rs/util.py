@@ -7,6 +7,10 @@ def get_trade_column_names():
     return ['timestamp', 'id', 'price', 'size']
 
 
+def get_lob_column_names():
+    return ['timestamp', 'action', 'price', 'size', 'begin_id', 'merged']
+
+
 # def cal_column_by_cond(row, df, data_column_name, time_range_in_sec=(-5, 0), operation='sum'):
 #     current_time = row['timestamp']
 #     mask = (df['timestamp'] >= current_time + time_range_in_sec[0]) & (df['timestamp'] <= current_time + time_range_in_sec[1])
