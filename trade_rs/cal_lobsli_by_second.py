@@ -6,11 +6,23 @@ from scipy.stats import pearsonr
 
 from trade_rs.util import get_trade_column_names, cal_column_by_cond, get_lob_column_names
 
+
+def read_file_to_csv(file_path, factor_list=None):
+    if factor_list is None:
+        factor_list = ['lob_vol_ib1']
+
+    f = open(file_path, 'r')
+    lines = f.readlines()
+    data = []
+    for line in lines:
+
+
+
 column_names = get_lob_column_names()
-files = [file for file in os.listdir('../gate/') if '-LOB-' in file]
+files = [file for file in os.listdir('../gate/lobsli/')]
 files.sort()
 
-dfs = [pd.read_csv(f"../gate/{file}", names=column_names) for file in files]
+dfs = [pd.read_csv(f"../gate/lobsli/{file}", names=column_names) for file in files]
 print(dfs)
 
 # df["buy"] = (df['size'] > 0).astype(int)
