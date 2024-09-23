@@ -24,6 +24,17 @@ def cal_factor_by_ask_bid(factor_name: str, asks: list[Order], bids: list[Order]
         ask_vol = asks[idx]['s']
         bid_vol = bids[idx]['s']
         return (bid_vol - ask_vol) / (bid_vol + ask_vol)
+    elif factor_name.startswith('weight_price'):
+        idx = int(factor_name[12:]) - 1
+        if idx >= len(asks) or idx >= len(bids):
+            return 0
+        ask_vol: int = asks[idx]['s']
+        ask_price: float = float(asks[idx]['p'])
+        bid_vol: int = bids[idx]['s']
+        bid_price: float = float(bids[idx]['p'])
+        return (ask_price * bid_vol * bid_price * ask_vol) / (bid_vol + ask_vol)
+    else:
+        raise Exception(f"没有定义 factor 计算方法: {factor_name}")
 
 
 def read_file_to_csv(file_path, factor_name_list=None):

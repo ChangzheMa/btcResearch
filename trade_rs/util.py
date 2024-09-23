@@ -14,7 +14,9 @@ def get_lob_column_names():
 def get_lob_factor_name_list():
     return [
         'lob_vol_ib1', 'lob_vol_ib2', 'lob_vol_ib3', 'lob_vol_ib4', 'lob_vol_ib5',
-        'lob_vol_ib6', 'lob_vol_ib7', 'lob_vol_ib8', 'lob_vol_ib9', 'lob_vol_ib10'   # 某档位挂单不平衡度，从 1 开始
+        'lob_vol_ib6', 'lob_vol_ib7', 'lob_vol_ib8', 'lob_vol_ib9', 'lob_vol_ib10',   # 某档位挂单不平衡度，从 1 开始
+        'weight_price1', 'weight_price2', 'weight_price3', 'weight_price4', 'weight_price5',
+        'weight_price6', 'weight_price7', 'weight_price8', 'weight_price9', 'weight_price10',   # 某档位加权价格
     ]
 
 
